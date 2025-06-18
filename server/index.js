@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3001;
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://saravana-kumar-2023.github.io/portfolio/',
+    'https://saravana-kumar-2023.github.io/Portfolio/',
     'https://saravana-kumar-2023.github.io'
   ],
   methods: ['GET', 'POST'],
