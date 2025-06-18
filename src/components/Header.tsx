@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Code, User, GraduationCap, Mail, Layers, FolderOpen } from 'lucide-react';
 
 const Header = () => {
@@ -27,7 +27,7 @@ const Header = () => {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
-    setIsOpen(false);
+    setIsOpen(false); // close mobile menu after clicking
   };
 
   return (
@@ -35,13 +35,14 @@ const Header = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled 
-          ? 'bg-gray-900/95 backdrop-blur-md border-b border-purple-500/20' 
+        scrolled
+          ? 'bg-gray-900/95 backdrop-blur-md border-b border-purple-500/20'
           : 'bg-transparent'
       }`}
     >
       <nav className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
+          {/* Logo */}
           <motion.div
             whileHover={{ scale: 1.05 }}
             className="flex items-center space-x-2"
@@ -77,25 +78,32 @@ const Header = () => {
         </div>
 
         {/* Mobile Navigation */}
-        <motion.div
-          initial={false}
-          animate={isOpen ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
-          className="md:hidden overflow-hidden"
-        >
-          <div className="py-4 space-y-4">
-            {navItems.map((item) => (
-              <motion.button
-                key={item.name}
-                onClick={() => scrollToSection(item.href)}
-                whileHover={{ x: 10 }}
-                className="flex items-center space-x-3 text-gray-300 hover:text-purple-400 transition-colors duration-200 w-full text-left"
-              >
-                <item.icon className="h-5 w-5" />
-                <span>{item.name}</span>
-              </motion.button>
-            ))}
-          </div>
-        </motion.div>
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              key="mobile-menu"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="md:hidden overflow-hidden"
+            >
+              <div className="py-4 space-y-4">
+                {navItems.map((item) => (
+                  <motion.button
+                    key={item.name}
+                    onClick={() => scrollToSection(item.href)}
+                    whileHover={{ x: 10 }}
+                    className="flex items-center space-x-3 text-gray-300 hover:text-purple-400 transition-colors duration-200 w-full text-left"
+                  >
+                    <item.icon className="h-5 w-5" />
+                    <span>{item.name}</span>
+                  </motion.button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
     </motion.header>
   );
