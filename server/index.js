@@ -95,7 +95,7 @@ app.post('/contact', async (req, res) => {
     // Check if email is configured
     const emailUser = process.env.EMAIL_USER || 'your-email@gmail.com';
     const emailPass = process.env.EMAIL_PASS || 'your-app-password';
-    
+
     if (emailUser === 'your-email@gmail.com' || emailPass === 'your-app-password') {
       console.log('⚠️  Email not configured properly');
       return res.status(200).json({
