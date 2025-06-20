@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { ExternalLink, Github, Code, Calendar, Cpu, Users } from 'lucide-react';
+import { ExternalLink, Github, Code, Calendar, Cpu, Users,Airplay } from 'lucide-react';
 
 const Projects = () => {
   const ref = useRef(null);
@@ -42,13 +42,32 @@ const Projects = () => {
         "Peer Learning Sessions using WebRTC",
         "Live Transcription Notes"
       ],
-      status: "In Development",
+      status: "Completed",
       year: "2025",
       category: "AI & Education",
       gradient: "from-blue-500 to-cyan-500",
       icon: Cpu,
       sourceLink:"https://github.com/Saravana-kumar-2023/AI-Based-WebRTC-Learning-Platform",
       liveLink: ""
+    },{
+      id: 3,
+      title: "My own Portfolio",
+      subtitle: "A website tells about me and my skills",
+      description: "A Clear cut of my skills and tells about what are the projects and my education did in my past and here you can contact as through the contact form.The main motive is to develop to reach over the IT field",
+      technologies: ["React-vite.js", "Node.js", "Express.js", "Three.js", "Tailwind CSS", "Framer-motion"],
+      features: [
+        "Responsive website",
+        "Knows about my skills and curriculam",
+        "Contact through the form",
+        "3D objects used"
+      ],
+      status: "Completed",
+      year: "2025",
+      category: "Portfolio",
+      gradient: "from-blue-500 to-cyan-500",
+      icon: Airplay,
+      sourceLink:"https://github.com/Saravana-kumar-2023/Portfolio",
+      liveLink: "https://saravana-kumar-2023.github.io/Portfolio/"
     }
   ];
 
