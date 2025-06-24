@@ -86,7 +86,7 @@ const Hero = () => {
               Get In Touch
             </motion.a>
             <motion.a
-              href="https://drive.google.com/file/d/16UdVhgqB1qw4M0BFw8vJ71L0UmBQrZck/view?usp=drive_link"
+              href="https://drive.google.com/file/d/16UdVhgqB1qw4M0BFw8vJ71L0UmBQrZck/view?usp=sharing"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="border border-purple-400 text-purple-400 px-8 py-3 rounded-full font-semibold hover:bg-purple-400 hover:text-white transition-all duration-300"
