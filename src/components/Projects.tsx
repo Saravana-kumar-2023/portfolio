@@ -79,8 +79,7 @@ const Projects = () => {
         "Responsive and user-friendly interface",
         "Add, update, view, and delete student records",
         "REST API-based backend integration",
-        "Secure and efficient database operations",
-        "Structured MVC architecture"
+        "Secure and efficient database operations"
       ],
       status: "Completed",
       year: "2025",
