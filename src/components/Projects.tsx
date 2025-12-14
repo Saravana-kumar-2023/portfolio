@@ -68,6 +68,27 @@ const Projects = () => {
       icon: Airplay,
       sourceLink:"https://github.com/Saravana-kumar-2023/Portfolio",
       liveLink: "https://saravana-kumar-2023.github.io/Portfolio/"
+    },
+    {
+      id: 4,
+      title: "Student Management System",
+      subtitle: "A CRUD-based web application for managing student records efficiently",
+      description: "A full-stack web application that allows administrators to add, view, update, and delete student details. The system provides a clean and responsive interface and ensures seamless communication between frontend and backend using RESTful APIs. The main goal of this project is to understand full-stack development and real-world data management.",
+      technologies: ["React JS", "Java Spring Boot", "RESTful APIs", "MySQL (MySQL Workbench)", "HTML", "CSS", "JavaScript"],
+      features: [
+        "Responsive and user-friendly interface",
+        "Add, update, view, and delete student records",
+        "REST API-based backend integration",
+        "Secure and efficient database operations",
+        "Structured MVC architecture"
+      ],
+      status: "Completed",
+      year: "2025",
+      category: "CRUD Project",
+      gradient: "from-blue-500 to-cyan-500",
+      icon: Airplay,
+      sourceLink:"",
+      liveLink: ""
     }
   ];
 
