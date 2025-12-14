@@ -68,7 +68,7 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             Full Stack Java Developer passionate about creating innovative web experiences 
-            with modern technologies like React, and Tailwind CSS
+            with modern technologies like React, SpringBoot, and JavaScript
           </motion.p>
 
           <motion.div
