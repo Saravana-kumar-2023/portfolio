@@ -1,6 +1,6 @@
 {
-  "name": "portfolio-frontend",
-  "homepage": "https://saravana-kumar-2023.github.io/portfolio-frontend",
+  "name": "portfolio",
+  "homepage": "https://saravana-kumar-2023.github.io/portfolio",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
