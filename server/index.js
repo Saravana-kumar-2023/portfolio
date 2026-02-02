@@ -93,12 +93,13 @@ app.post('/contact', async (req, res) => {
     const emailUser = process.env.EMAIL_USER;
     const emailPass = process.env.EMAIL_PASS;
 
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    if (!emailUser || !emailPass) {
       return res.status(500).json({
         success: false,
         message: "Server email is not configured"
       });
     }
+
 
 
     const transporter = createTransporter();
