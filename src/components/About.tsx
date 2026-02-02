@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-
+import profile from "/Picture.png";
 const About = () => {
   return (
     <section
@@ -21,7 +21,7 @@ const About = () => {
                           bg-gradient-to-tr from-purple-500 to-blue-500 p-1">
             <div className="w-full h-full rounded-full overflow-hidden bg-black">
               <img
-                src="./Picture.png"
+                src={profile}
                 alt="My Profile"
                 className="w-full h-full object-cover"
               />
