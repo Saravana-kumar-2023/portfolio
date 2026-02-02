@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import profile from "/dist/assets/Picture-EVAxglJo.png";
+import profile from "../assets/Picture.png";
 const About = () => {
   return (
     <section
