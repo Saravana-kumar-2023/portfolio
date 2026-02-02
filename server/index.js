@@ -31,13 +31,10 @@ app.use((req, res, next) => {
 
 // Email configuration with better error handling
 const createTransporter = () => {
-  const emailUser = process.env.EMAIL_USER || 'saravanakumar092003@gmail.com';
-  const emailPass = process.env.EMAIL_PASS || 'pwen kjnc rlqx obrs';
+  const emailUser = process.env.EMAIL_USER;
+  const emailPass = process.env.EMAIL_PASS;
   
-  console.log('Email configuration:', {
-    user: emailUser,
-    passConfigured: emailPass !== 'pwen kjnc rlqx obrs'
-  });
+  console.log("📧 Email user loaded from env:", emailUser);
 
   return nodemailer.createTransport({
     service: 'gmail',
@@ -93,16 +90,16 @@ app.post('/contact', async (req, res) => {
     }
 
     // Check if email is configured
-    const emailUser = process.env.EMAIL_USER || 'saravanakumar092003@gmail.com';
-    const emailPass = process.env.EMAIL_PASS || 'pwen kjnc rlqx obrs';
+    const emailUser = process.env.EMAIL_USER;
+    const emailPass = process.env.EMAIL_PASS;
 
-    if (emailUser === 'your-email@gmail.com' || emailPass === 'your-app-password') {
-      console.log('⚠️  Email not configured properly');
-      return res.status(200).json({
-        success: true,
-        message: 'Message received! (Email configuration needed for actual sending)'
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      return res.status(500).json({
+        success: false,
+        message: "Server email is not configured"
       });
     }
+
 
     const transporter = createTransporter();
 
