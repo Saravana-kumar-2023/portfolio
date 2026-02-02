@@ -1,117 +1,76 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
-import { Coffee, Heart, Zap } from 'lucide-react';
+import { motion } from "framer-motion";
 
 const About = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 }
-    }
-  };
-
   return (
-    <section id="about" className="py-20 bg-gray-800/50" ref={ref}>
-      <div className="container mx-auto px-6">
+    <section
+      id="about"
+      className="py-24 bg-transparent text-white relative z-10 overflow-hidden"
+    >
+      <div className="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+
+        {/* LEFT IMAGE */}
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="max-w-4xl mx-auto"
+          initial={{ opacity: 0, x: -80, scale: 0.85 }}
+          whileInView={{ opacity: 1, x: 0, scale: 1 }}
+          exit={{ opacity: 0, x: -40, scale: 0.85 }}
+          viewport={{ once: false, amount: 0.3 }}   // 👈 animate EVERY time
+          transition={{ duration: 0.9, ease: "easeInOut" }}
+          className="flex justify-center"
         >
-          <motion.h2
-            variants={itemVariants}
-            className="text-4xl md:text-5xl font-bold text-center text-white mb-12"
-          >
-            About <span className="text-purple-400">Me</span>
-          </motion.h2>
-
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <motion.div variants={itemVariants} className="space-y-6">
-              <p className="text-lg text-gray-300 leading-relaxed">
-                I'm a passionate Full Stack Java Developer with a fresh perspective on 
-                modern web development. My journey began with a fascination for creating 
-                digital experiences that bridge the gap between functionality and beauty.
-              </p>
-              <p className="text-lg text-gray-300 leading-relaxed">
-                Specializing in Java backend development and modern frontend frameworks 
-                like React, I bring ideas to life with clean, efficient code. My expertise 
-                in Tailwind CSS helps me create responsive, visually appealing interfaces 
-                that users love.
-              </p>
-              <p className="text-lg text-gray-300 leading-relaxed">
-                This portfolio itself showcases my skills with Three.js and React Three Fiber, 
-                demonstrating my ability to create immersive 3D web experiences that push 
-                the boundaries of traditional web development.
-              </p>
-            </motion.div>
-
-            <motion.div variants={itemVariants} className="space-y-6">
-              <motion.div 
-                whileHover={{ scale: 1.02 }}
-                className="bg-gradient-to-br from-purple-500/10 to-blue-500/10 p-6 rounded-xl border border-purple-500/20"
-              >
-                <div className="flex items-center space-x-3 mb-4">
-                  <Coffee className="h-6 w-6 text-purple-400" />
-                  <h3 className="text-xl font-semibold text-white">What I Do</h3>
-                </div>
-                <ul className="space-y-2 text-gray-300">
-                  <li>• Full Stack Java Development</li>
-                  <li>• Modern React Applications</li>
-                  <li>• Responsive UI/UX Design</li>
-                  <li>• 3D Web Experiences</li>
-                </ul>
-              </motion.div>
-
-              <motion.div 
-                whileHover={{ scale: 1.02 }}
-                className="bg-gradient-to-br from-blue-500/10 to-green-500/10 p-6 rounded-xl border border-blue-500/20"
-              >
-                <div className="flex items-center space-x-3 mb-4">
-                  <Heart className="h-6 w-6 text-blue-400" />
-                  <h3 className="text-xl font-semibold text-white">What I Love</h3>
-                </div>
-                <ul className="space-y-2 text-gray-300">
-                  <li>• Problem Solving</li>
-                  <li>• Learning New Technologies</li>
-                  <li>• Creating Beautiful Interfaces</li>
-                  <li>• Collaborative Development</li>
-                </ul>
-              </motion.div>
-
-              <motion.div 
-                whileHover={{ scale: 1.02 }}
-                className="bg-gradient-to-br from-green-500/10 to-yellow-500/10 p-6 rounded-xl border border-green-500/20"
-              >
-                <div className="flex items-center space-x-3 mb-4">
-                  <Zap className="h-6 w-6 text-green-400" />
-                  <h3 className="text-xl font-semibold text-white">My Goal</h3>
-                </div>
-                <p className="text-gray-300">
-                  To contribute to innovative projects that make a positive impact 
-                  while continuously growing as a developer.
-                </p>
-              </motion.div>
-            </motion.div>
+          <div className="relative w-72 h-72 md:w-96 md:h-96 rounded-full 
+                          bg-gradient-to-tr from-purple-500 to-blue-500 p-1">
+            <div className="w-full h-full rounded-full overflow-hidden bg-black">
+              <img
+                src="./Picture.png"
+                alt="My Profile"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="absolute inset-0 rounded-full blur-3xl bg-purple-500/30 -z-10" />
           </div>
         </motion.div>
+
+        {/* RIGHT CONTENT */}
+        <motion.div
+          initial={{ opacity: 0, x: 80 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 80 }}
+          viewport={{ once: false, amount: 0.3 }}   // 👈 re-animate on revisit
+          transition={{ duration: 0.9, ease: "easeInOut", delay: 0.1 }}
+          className="space-y-6 backdrop-blur-md bg-white/5 p-8 rounded-2xl border border-white/10 shadow-lg"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold">
+            About <span className="text-purple-500">Me</span>
+          </h2>
+
+          <p className="text-gray-300 leading-relaxed">
+            I'm a passionate Full Stack Java Developer who loves creating
+            modern, animated, and immersive web experiences.
+          </p>
+
+          <p className="text-gray-400 leading-relaxed">
+            I work with Java, Spring Boot, React, and Tailwind CSS to build
+            clean, scalable, and responsive applications.
+          </p>
+
+          <p className="text-gray-400 leading-relaxed">
+            This portfolio demonstrates my ability to blend UI, animations,
+            and 3D graphics using Three.js and React Three Fiber.
+          </p>
+
+          <div className="flex flex-wrap gap-3 pt-4">
+            <span className="px-4 py-2 rounded-full bg-purple-500/20 text-purple-400">
+              Full Stack Developer
+            </span>
+            <span className="px-4 py-2 rounded-full bg-blue-500/20 text-blue-400">
+              React Specialist
+            </span>
+            <span className="px-4 py-2 rounded-full bg-green-500/20 text-green-400">
+              Java Backend
+            </span>
+          </div>
+        </motion.div>
+
       </div>
     </section>
   );

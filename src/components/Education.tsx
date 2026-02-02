@@ -4,7 +4,7 @@ import { GraduationCap, Calendar, MapPin, Award, BookOpen, Trophy, Star } from '
 
 const Education = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.1 });
+  const isInView = useInView(ref, { once: false, margin: "-25% 0px" }); // animate in/out
 
   const educationData = [
     {
@@ -70,96 +70,48 @@ const Education = () => {
     }
   ];
 
+  // ===== Framer Motion Variants =====
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        staggerChildren: 0.4
-      }
-      
+    visible: { 
+      opacity: 1, 
+      transition: { duration: 0.4, staggerChildren: 0.3, ease: "easeInOut" } 
     }
   };
 
-  const timelineVariants = {
-    hidden: { scaleY: 0 },
-    visible: {
-      scaleY: 1,
-      transition: {
-        duration: 1.3,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const leftCardVariants = {
-    hidden: { 
-      opacity: 0, 
-      x: -100,
-      scale: 0.8
-    },
-    visible: {
-      opacity: 1,
-      x: 0,
+  const cardVariants = {
+    hidden: (direction: string) => ({
+      opacity: 0,
+      x: direction === "left" ? -100 : 100,
+      scale: 0.9
+    }),
+    visible: { 
+      opacity: 1, 
+      x: 0, 
       scale: 1,
-      transition: { 
-        duration: 1.3,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const rightCardVariants = {
-    hidden: { 
-      opacity: 0, 
-      x: 100,
-      scale: 0.8
-    },
-    visible: {
-      opacity: 1,
-      x: 0,
-      scale: 1,
-      transition: { 
-        duration: 1.3,
-        ease: "easeOut"
-      }
+      transition: { duration: 0.8, ease: "easeInOut" } 
     }
   };
 
   const dotVariants = {
-    hidden: { 
-      scale: 0,
-      opacity: 0
-    },
-    visible: {
-      scale: 1,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut"
-      }
-    }
+    hidden: { scale: 0, opacity: 0 },
+    visible: { scale: 1, opacity: 1, transition: { duration: 0.5, ease: "easeInOut" } }
+  };
+
+  const timelineVariants = {
+    hidden: { scaleY: 0, opacity: 0 },
+    visible: { scaleY: 1, opacity: 1, transition: { duration: 1.2, ease: "easeInOut" } }
   };
 
   const titleVariants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 }
-    }
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeInOut" } }
   };
 
   return (
     <section id="education" className="py-20 bg-gray-900 relative overflow-hidden" ref={ref}>
-      {/* Neon background effects */}
+      {/* Neon background particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Neon glow lines */}
-        <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent"></div>
-        <div className="absolute top-3/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-400/30 to-transparent"></div>
-        
-        {/* Floating neon particles */}
         {Array.from({ length: 12 }).map((_, index) => (
           <motion.div
             key={index}
@@ -179,11 +131,7 @@ const Education = () => {
               opacity: [0.3, 0.8, 0.3],
               scale: [1, 1.5, 1],
             }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-            }}
+            transition={{ duration: 4, repeat: Infinity, delay: Math.random() * 2 }}
           />
         ))}
       </div>
@@ -195,275 +143,147 @@ const Education = () => {
           animate={isInView ? "visible" : "hidden"}
           className="max-w-6xl mx-auto"
         >
-          <motion.h2
-            variants={titleVariants}
-            className="text-4xl md:text-5xl font-bold text-center text-white mb-4"
-          >
+          <motion.h2 variants={titleVariants} className="text-4xl md:text-5xl font-bold text-center text-white mb-4">
             My <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 animate-pulse">Education</span>
           </motion.h2>
-          
-          <motion.p
-            variants={titleVariants}
-            className="text-xl text-gray-400 text-center mb-16"
-          >
+          <motion.p variants={titleVariants} className="text-xl text-gray-400 text-center mb-16">
             Academic journey that shaped my technical foundation
           </motion.p>
 
           <div className="relative">
-            {/* Neon Timeline Line */}
-            <motion.div 
+            {/* Timeline Line */}
+            <motion.div
               variants={timelineVariants}
               className="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-1 rounded-full origin-top"
-              style={{ 
+              style={{
                 height: '100%',
                 background: 'linear-gradient(to bottom, #00ffff, #8b5cf6, #ff00ff)',
                 boxShadow: '0 0 20px #00ffff, 0 0 40px #8b5cf6, 0 0 60px #ff00ff',
-                filter: 'blur(0.5px)'
-              }}
-            />
-
-            {/* Additional glow effect for timeline */}
-            <motion.div 
-              variants={timelineVariants}
-              className="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-3 rounded-full origin-top opacity-30"
-              style={{ 
-                height: '100%',
-                background: 'linear-gradient(to bottom, #00ffff, #8b5cf6, #ff00ff)',
-                filter: 'blur(3px)',
-                marginLeft: '-5px'
+                filter: 'blur(0.5px)',
               }}
             />
 
             <div className="space-y-16">
-              {educationData.map((edu, index) => (
-                <motion.div
-                  key={edu.id}
-                  variants={index % 2 === 0 ? leftCardVariants : rightCardVariants}
-                  className={`relative flex items-center ${
-                    index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                  }`}
-                >
-                  {/* Neon Timeline Dot */}
-                  <motion.div 
-                    variants={dotVariants}
-                    className="absolute left-[calc(10%-0.42cm)] md:left-[calc(50%-0.25cm)] transform -translate-x-1/2 z-20"
+              {educationData.map((edu, index) => {
+                const direction = index % 2 === 0 ? "left" : "right";
+                const color = index % 3 === 0 ? '#00ffff' : index % 3 === 1 ? '#8b5cf6' : '#ff00ff';
+                return (
+                  <motion.div
+                    key={edu.id}
+                    custom={direction}
+                    variants={cardVariants}
+                    className={`relative flex items-center ${direction === "left" ? 'md:flex-row' : 'md:flex-row-reverse'}`}
                   >
-                    <div 
-                      className="w-6 h-6 rounded-full border-2 relative"
-                      style={{
-                        background: `radial-gradient(circle, ${
-                          index % 3 === 0 ? '#00ffff' : index % 3 === 1 ? '#8b5cf6' : '#ff00ff'
-                        }, transparent)`,
-                        borderColor: index % 3 === 0 ? '#00ffff' : index % 3 === 1 ? '#8b5cf6' : '#ff00ff',
-                        boxShadow: `0 0 20px ${
-                          index % 3 === 0 ? '#00ffff' : index % 3 === 1 ? '#8b5cf6' : '#ff00ff'
-                        }, inset 0 0 10px ${
-                          index % 3 === 0 ? '#00ffff' : index % 3 === 1 ? '#8b5cf6' : '#ff00ff'
-                        }40`
-                      }}
-                    >
-                      {/* Pulsing inner dot */}
-                      <motion.div
-                        animate={{
-                          scale: [1, 1.5, 1],
-                          opacity: [0.8, 0.4, 0.8],
-                        }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                        }}
-                        className="absolute inset-1 rounded-full"
-                        style={{
-                          background: index % 3 === 0 ? '#00ffff' : index % 3 === 1 ? '#8b5cf6' : '#ff00ff'
-                        }}
-                      />
-                    </div>
-                  </motion.div>
-
-                  {/* Education Card */}
-                  <div className={`w-full md:w-5/12 ml-20 md:ml-0 ${
-                    index % 2 === 0 ? 'md:mr-12' : 'md:ml-12'
-                  }`}>
+                    {/* Timeline Dot */}
                     <motion.div
-                      whileHover={{ 
-                        scale: 1.02,
-                        transition: { duration: 0.2 }
-                      }}
-                      className="relative bg-gradient-to-br from-gray-800/90 to-gray-700/90 p-6 rounded-xl border transition-all duration-300 backdrop-blur-sm"
-                      style={{
-                        borderColor: index % 3 === 0 ? '#00ffff40' : index % 3 === 1 ? '#8b5cf640' : '#ff00ff40',
-                        boxShadow: `0 0 30px ${
-                          index % 3 === 0 ? '#00ffff' : index % 3 === 1 ? '#8b5cf6' : '#ff00ff'
-                        }20`
-                      }}
+                      variants={dotVariants}
+                      className="absolute left-[calc(8%-0.20cm)] md:left-[calc(50%-0.25cm)] transform -translate-x-1/2 z-20"
                     >
-                      {/* Neon border glow effect */}
-                      <div 
-                        className="absolute inset-0 rounded-xl opacity-20 pointer-events-none"
+                      <div
+                        className="w-6 h-6 rounded-full border-2 relative"
                         style={{
-                          background: `linear-gradient(45deg, ${
-                            index % 3 === 0 ? '#00ffff' : index % 3 === 1 ? '#8b5cf6' : '#ff00ff'
-                          }20, transparent, ${
-                            index % 3 === 0 ? '#00ffff' : index % 3 === 1 ? '#8b5cf6' : '#ff00ff'
-                          }20)`,
-                          filter: 'blur(1px)'
+                          background: `radial-gradient(circle, ${color}, transparent)`,
+                          borderColor: color,
+                          boxShadow: `0 0 20px ${color}, inset 0 0 10px ${color}40`,
                         }}
-                      />
-
-                      {/* Header */}
-                      <div className="flex items-start justify-between mb-4 relative z-10">
-                        <div className="flex items-center space-x-3">
-                          <div 
-                            className="p-2 rounded-lg relative"
-                            style={{
-                              background: `radial-gradient(circle, ${
-                                index % 3 === 0 ? '#00ffff' : index % 3 === 1 ? '#8b5cf6' : '#ff00ff'
-                              }20, transparent)`,
-                              boxShadow: `0 0 15px ${
-                                index % 3 === 0 ? '#00ffff' : index % 3 === 1 ? '#8b5cf6' : '#ff00ff'
-                              }30`
-                            }}
-                          >
-                            <GraduationCap 
-                              className="h-6 w-6"
-                              style={{
-                                color: index % 3 === 0 ? '#00ffff' : index % 3 === 1 ? '#8b5cf6' : '#ff00ff',
-                                filter: `drop-shadow(0 0 5px ${
-                                  index % 3 === 0 ? '#00ffff' : index % 3 === 1 ? '#8b5cf6' : '#ff00ff'
-                                })`
-                              }}
-                            />
-                          </div>
-                          <div>
-                            <h3 className="text-xl font-bold text-white">{edu.degree}</h3>
-                            <p 
-                              className="font-semibold"
-                              style={{
-                                color: index % 3 === 0 ? '#00ffff' : index % 3 === 1 ? '#8b5cf6' : '#ff00ff',
-                                textShadow: `0 0 10px ${
-                                  index % 3 === 0 ? '#00ffff' : index % 3 === 1 ? '#8b5cf6' : '#ff00ff'
-                                }40`
-                              }}
-                            >
-                              {edu.field}
-                            </p>
-                          </div>
-                        </div>
-                        <div 
-                          className="flex items-center space-x-2 px-3 py-1 rounded-full relative"
-                          style={{
-                            background: `radial-gradient(circle, #10b98120, transparent)`,
-                            border: '1px solid #10b98140',
-                            boxShadow: '0 0 15px #10b98130'
-                          }}
-                        >
-                          <Award className="h-4 w-4 text-green-400" style={{ filter: 'drop-shadow(0 0 3px #10b981)' }} />
-                          <span className="text-green-400 font-semibold text-sm" style={{ textShadow: '0 0 5px #10b98140' }}>
-                            {edu.grade}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Institution Details */}
-                      <div className="space-y-2 mb-4 relative z-10">
-                        <div className="flex items-center space-x-2 text-gray-300">
-                          <BookOpen className="h-4 w-4 text-blue-400" style={{ filter: 'drop-shadow(0 0 3px #3b82f6)' }} />
-                          <span className="font-medium">{edu.institution}</span>
-                        </div>
-                        <div className="flex items-center space-x-2 text-gray-300">
-                          <MapPin className="h-4 w-4 text-red-400" style={{ filter: 'drop-shadow(0 0 3px #ef4444)' }} />
-                          <span>{edu.location}</span>
-                        </div>
-                        <div className="flex items-center space-x-2 text-gray-300">
-                          <Calendar className="h-4 w-4 text-green-400" style={{ filter: 'drop-shadow(0 0 3px #10b981)' }} />
-                          <span>{edu.duration}</span>
-                        </div>
-                      </div>
-
-                      {/* Description */}
-                      <p className="text-gray-300 mb-4 leading-relaxed relative z-10">{edu.description}</p>
-
-                      {/* Highlights */}
-                      <div className="mb-4 relative z-10">
-                        <h4 className="text-white font-semibold mb-3 flex items-center">
-                          <Star className="h-4 w-4 mr-2 text-yellow-400" style={{ filter: 'drop-shadow(0 0 3px #fbbf24)' }} />
-                          Key Highlights
-                        </h4>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                          {edu.highlights.map((highlight, idx) => (
-                            <div key={idx} className="flex items-center space-x-2">
-                              <div 
-                                className="w-2 h-2 rounded-full"
-                                style={{
-                                  background: index % 3 === 0 ? '#00ffff' : index % 3 === 1 ? '#8b5cf6' : '#ff00ff',
-                                  boxShadow: `0 0 5px ${
-                                    index % 3 === 0 ? '#00ffff' : index % 3 === 1 ? '#8b5cf6' : '#ff00ff'
-                                  }`
-                                }}
-                              />
-                              <span className="text-gray-300 text-sm">{highlight}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Achievements */}
-                      <div className="relative z-10">
-                        <h4 className="text-white font-semibold mb-3 flex items-center">
-                          <Trophy className="h-4 w-4 mr-2 text-yellow-400" style={{ filter: 'drop-shadow(0 0 3px #fbbf24)' }} />
-                          Achievements
-                        </h4>
-                        <div className="space-y-2">
-                          {edu.achievements.map((achievement, idx) => (
-                            <div key={idx} className="flex items-center space-x-2">
-                              <div 
-                                className="w-2 h-2 rounded-full"
-                                style={{
-                                  background: '#fbbf24',
-                                  boxShadow: '0 0 5px #fbbf24'
-                                }}
-                              />
-                              <span className="text-gray-300 text-sm">{achievement}</span>
-                            </div>
-                          ))}
-                        </div>
+                      >
+                        <motion.div
+                          animate={{ scale: [1, 1.5, 1], opacity: [0.8, 0.4, 0.8] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                          className="absolute inset-1 rounded-full"
+                          style={{ background: color }}
+                        />
                       </div>
                     </motion.div>
-                  </div>
-                </motion.div>
-              ))}
+
+                    {/* Education Card */}
+                    <div className={`w-full md:w-5/12 ml-20 md:ml-0 ${direction === "left" ? 'md:mr-12' : 'md:ml-12'}`}>
+                      <motion.div
+                        whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+                        className="relative bg-gradient-to-br from-gray-800/90 to-gray-700/90 p-6 rounded-xl border transition-all duration-300 backdrop-blur-sm"
+                        style={{ borderColor: `${color}40`, boxShadow: `0 0 30px ${color}20` }}
+                      >
+                        {/* Header */}
+                        <div className="flex items-start justify-between mb-4 relative z-10">
+                          <div className="flex items-center space-x-3">
+                            <div className="p-2 rounded-lg relative" style={{ background: `${color}20`, boxShadow: `0 0 15px ${color}30` }}>
+                              <GraduationCap className="h-6 w-6" style={{ color: color, filter: `drop-shadow(0 0 5px ${color})` }} />
+                            </div>
+                            <div>
+                              <h3 className="text-xl font-bold text-white">{edu.degree}</h3>
+                              <p className="font-semibold" style={{ color: color, textShadow: `0 0 10px ${color}40` }}>{edu.field}</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center space-x-2 px-3 py-1 rounded-full relative" style={{ background: '#10b98120', border: '1px solid #10b98140', boxShadow: '0 0 15px #10b98130' }}>
+                            <Award className="h-4 w-4 text-green-400" style={{ filter: 'drop-shadow(0 0 3px #10b981)' }} />
+                            <span className="text-green-400 font-semibold text-sm" style={{ textShadow: '0 0 5px #10b98140' }}>{edu.grade}</span>
+                          </div>
+                        </div>
+
+                        {/* Institution & Duration */}
+                        <div className="space-y-2 mb-4 relative z-10">
+                          <div className="flex items-center space-x-2 text-gray-300">
+                            <BookOpen className="h-4 w-4 text-blue-400" style={{ filter: 'drop-shadow(0 0 3px #3b82f6)' }} />
+                            <span className="font-medium">{edu.institution}</span>
+                          </div>
+                          <div className="flex items-center space-x-2 text-gray-300">
+                            <MapPin className="h-4 w-4 text-red-400" style={{ filter: 'drop-shadow(0 0 3px #ef4444)' }} />
+                            <span>{edu.location}</span>
+                          </div>
+                          <div className="flex items-center space-x-2 text-gray-300">
+                            <Calendar className="h-4 w-4 text-green-400" style={{ filter: 'drop-shadow(0 0 3px #10b981)' }} />
+                            <span>{edu.duration}</span>
+                          </div>
+                        </div>
+
+                        {/* Description */}
+                        <p className="text-gray-300 mb-4 leading-relaxed relative z-10">{edu.description}</p>
+
+                        {/* Highlights */}
+                        <div className="mb-4 relative z-10">
+                          <h4 className="text-white font-semibold mb-3 flex items-center">
+                            <Star className="h-4 w-4 mr-2 text-yellow-400" style={{ filter: 'drop-shadow(0 0 3px #fbbf24)' }} />
+                            Key Highlights
+                          </h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {edu.highlights.map((highlight, idx) => (
+                              <div key={idx} className="flex items-center space-x-2">
+                                <div className="w-2 h-2 rounded-full" style={{ background: color, boxShadow: `0 0 5px ${color}` }} />
+                                <span className="text-gray-300 text-sm">{highlight}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Achievements */}
+                        <div className="relative z-10">
+                          <h4 className="text-white font-semibold mb-3 flex items-center">
+                            <Trophy className="h-4 w-4 mr-2 text-yellow-400" style={{ filter: 'drop-shadow(0 0 3px #fbbf24)' }} />
+                            Achievements
+                          </h4>
+                          <div className="space-y-2">
+                            {edu.achievements.map((achievement, idx) => (
+                              <div key={idx} className="flex items-center space-x-2">
+                                <div className="w-2 h-2 rounded-full" style={{ background: '#fbbf24', boxShadow: '0 0 5px #fbbf24' }} />
+                                <span className="text-gray-300 text-sm">{achievement}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                )
+              })}
             </div>
           </div>
 
           {/* Call to Action */}
-          <motion.div
-            variants={titleVariants}
-            className="mt-16 text-center"
-          >
-            <div 
-              className="relative p-6 rounded-xl border backdrop-blur-sm"
-              style={{
-                background: 'linear-gradient(135deg, #8b5cf620, #00ffff10)',
-                borderColor: '#8b5cf640',
-                boxShadow: '0 0 30px #8b5cf620'
-              }}
-            >
-              {/* Animated border glow */}
-              <div 
-                className="absolute inset-0 rounded-xl opacity-30 pointer-events-none"
-                style={{
-                  background: 'linear-gradient(45deg, #8b5cf620, transparent, #00ffff20)',
-                  filter: 'blur(1px)'
-                }}
-              />
-              
-              <h3 className="text-2xl font-bold text-white mb-4 relative z-10">
-                Ready for the Next Chapter
-              </h3>
-              <p className="text-gray-300 text-lg relative z-10">
-                With a solid educational foundation and passion for continuous learning, 
-                I'm excited to contribute to innovative projects and grow as a developer.
-              </p>
+          <motion.div variants={titleVariants} className="mt-16 text-center">
+            <div className="relative p-6 rounded-xl border backdrop-blur-sm" style={{ background: 'linear-gradient(135deg, #8b5cf620, #00ffff10)', borderColor: '#8b5cf640', boxShadow: '0 0 30px #8b5cf620' }}>
+              <div className="absolute inset-0 rounded-xl opacity-30 pointer-events-none" style={{ background: 'linear-gradient(45deg, #8b5cf620, transparent, #00ffff20)', filter: 'blur(1px)' }} />
+              <h3 className="text-2xl font-bold text-white mb-4 relative z-10">Ready for the Next Chapter</h3>
+              <p className="text-gray-300 text-lg relative z-10">With a solid educational foundation and passion for continuous learning, I'm excited to contribute to innovative projects and grow as a developer.</p>
             </div>
           </motion.div>
         </motion.div>
