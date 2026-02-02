@@ -6,15 +6,25 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://saravana-kumar-2023.github.io"
+];
 // Enhanced CORS configuration
+
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://saravana-kumar-2023.github.io/Portfolio/',
-    'https://saravana-kumar-2023.github.io'
-  ],
-  methods: ['GET', 'POST'],
-  credentials: true
+  origin: (origin, callback) => {
+    // allow requests with no origin (like Postman)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error(`CORS blocked for origin: ${origin}`), false);
+  },
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"],
 }));
 
 app.options('*', cors());
