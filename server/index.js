@@ -1,116 +1,103 @@
-import express from 'express';
-import cors from 'cors';
-import nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
+import express from "express";
+import cors from "cors";
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+
 dotenv.config();
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://saravana-kumar-2023.github.io"
+  "https://saravana-kumar-2023.github.io",
 ];
-// Enhanced CORS configuration
 
-app.use(cors({
-  origin: (origin, callback) => {
-    // allow requests with no origin (like Postman)
-    if (!origin) return callback(null, true);
+// CORS
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true); // Postman etc.
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error(`CORS blocked for origin: ${origin}`), false);
+    },
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type"],
+  })
+);
 
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-
-    return callback(new Error(`CORS blocked for origin: ${origin}`), false);
-  },
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type"],
-}));
-
-app.options('*', cors());
+app.options("*", cors());
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Add request logging
+// Logger
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
   next();
 });
 
-// Email configuration with better error handling
+// Create transporter (SMTP explicit to avoid Render timeout issues with "service")
 const createTransporter = () => {
   const emailUser = process.env.EMAIL_USER;
   const emailPass = process.env.EMAIL_PASS;
-  
+
   console.log("📧 Email user loaded from env:", emailUser);
 
+  // IMPORTANT: don't allow undefined here
+  if (!emailUser || !emailPass) {
+    throw new Error("Missing EMAIL_USER or EMAIL_PASS in environment variables");
+  }
+
   return nodemailer.createTransport({
-    service: 'gmail',
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // 465 = true
     auth: {
       user: emailUser,
-      pass: emailPass
+      pass: emailPass,
     },
-    tls: {
-      rejectUnauthorized: false
-    }
+    // Extra timeouts to prevent quick failure on cold starts
+    connectionTimeout: 30_000,
+    greetingTimeout: 30_000,
+    socketTimeout: 30_000,
   });
 };
 
+// Contact endpoint
+app.post("/contact", async (req, res) => {
+  console.log("📨 Contact form submission received:", req.body);
 
-// Test email configuration on startup
-const testEmailConfig = async () => {
-  try {
-    const transporter = createTransporter();
-    await transporter.verify();
-    console.log('✅ Email configuration is valid');
-    return true;
-  } catch (error) {
-    console.log('⚠️  Email configuration issue:', error.message);
-    console.log('📧 Please check your .env file and Gmail app password');
-    return false;
-  }
-};
-
-// Contact form endpoint with enhanced error handling
-app.post('/contact', async (req, res) => {
-  console.log('📨 Contact form submission received:', req.body);
-  
   try {
     const { name, email, subject, message } = req.body;
 
     // Validate required fields
     if (!name || !email || !subject || !message) {
-      console.log('❌ Validation failed: Missing required fields');
       return res.status(400).json({
         success: false,
-        message: 'All fields are required'
+        message: "All fields are required",
       });
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      console.log('❌ Validation failed: Invalid email format');
       return res.status(400).json({
         success: false,
-        message: 'Invalid email format'
+        message: "Invalid email format",
       });
     }
 
-    // Check if email is configured
     const emailUser = process.env.EMAIL_USER;
     const emailPass = process.env.EMAIL_PASS;
 
     if (!emailUser || !emailPass) {
       return res.status(500).json({
         success: false,
-        message: "Server email is not configured"
+        message: "Server email is not configured",
       });
     }
-
-
 
     const transporter = createTransporter();
 
@@ -262,9 +249,17 @@ app.get('/', (req, res) => {
 });
 
 // Start server
-app.listen(PORT, async () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-  console.log(`📧 Testing email configuration...`);
-  await testEmailConfig();
-  console.log(`✅ Backend ready for contact form submission`);
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+
+  // Optional: verify without blocking server
+  try {
+    const transporter = createTransporter();
+    transporter
+      .verify()
+      .then(() => console.log("✅ SMTP verify OK"))
+      .catch((e) => console.log("⚠️ SMTP verify failed:", e.message));
+  } catch (e) {
+    console.log("⚠️ SMTP setup missing env:", e.message);
+  }
 });
